@@ -114,6 +114,10 @@ jobs:
       run: .\python.bat -m test.pythoninfo
     - name: Tests
       run: .\PCbuild\rt.bat -p Win32 -q -uall -u-cpu -rwW --slowest --timeout=1200 -j0
+   - uses: actions/upload-artifact@v2
+      with:
+        name: python-win32
+        path: PCbuild/win32
 
   build_win_amd64:
     name: 'Windows (x64)'
@@ -128,6 +132,10 @@ jobs:
       run: .\python.bat -m test.pythoninfo
     - name: Tests
       run: .\PCbuild\rt.bat -p x64 -q -uall -u-cpu -rwW --slowest --timeout=1200 -j0
+    - uses: actions/upload-artifact@v2
+      with:
+        name: python-amd64
+        path: PCbuild/amd64
 
   build_macos:
     name: 'macOS'
