@@ -114,7 +114,7 @@ jobs:
       run: .\python.bat -m test.pythoninfo
     - name: Tests
       run: .\PCbuild\rt.bat -p Win32 -q -uall -u-cpu -rwW --slowest --timeout=1200 -j0
-   - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v2
       with:
         name: python-win32
         path: PCbuild/win32
