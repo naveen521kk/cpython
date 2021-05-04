@@ -1,0 +1,23 @@
+name: Build
+
+on:
+  push:
+
+jobs:
+  build_nuget_x64:
+    name: 'Build Nuget'
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        shell: powershell
+        run: |
+          .\Tools\nuget\build.bat -x64 --out $PWD\nuget_package
+    - name: Compress and pack
+      shell: cmd
+      run: |
+        C:\msys64\usr\bin\tar.exe --zstd -cf python.tar.zst ./nuget_package
+    - uses: actions/upload-artifact@v2
+      with:
+        name: python-amd64
+        path: python.tar.zst
