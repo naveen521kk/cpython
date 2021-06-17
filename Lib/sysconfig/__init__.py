@@ -100,14 +100,19 @@ _INSTALL_SCHEMES = {
         },
     }
 
+# GCC[mingw*] use posix build system
+_POSIX_BUILD = os.name == 'posix' or \
+    (os.name == "nt" and 'GCC' in sys.version)
+
 # For the OS-native venv scheme, we essentially provide an alias:
-if os.name == 'nt':
+if os.name == 'nt' and not _POSIX_BUILD:
     _INSTALL_SCHEMES['venv'] = _INSTALL_SCHEMES['nt_venv']
 else:
     _INSTALL_SCHEMES['venv'] = _INSTALL_SCHEMES['posix_venv']
 
 def _get_implementation():
     return 'Python'
+
 
 # NOTE: site.py has copy of this function.
 # Sync it when modify this function.
@@ -123,7 +128,7 @@ def _getuserbase():
     def joinuser(*args):
         return os.path.expanduser(os.path.join(*args))
 
-    if os.name == "nt":
+    if os.name == "nt" and not _POSIX_BUILD:
         base = os.environ.get("APPDATA") or "~"
         return joinuser(base,  _get_implementation())
 
@@ -278,7 +283,7 @@ def _expand_vars(scheme, vars):
 
 
 def _get_preferred_schemes():
-    if os.name == 'nt':
+    if os.name == 'nt' and not _POSIX_BUILD:
         return {
             'prefix': 'nt',
             'home': 'posix_home',
@@ -419,7 +424,7 @@ def parse_config_h(fp, vars=None):
 def get_config_h_filename():
     """Return the path of pyconfig.h."""
     if _PYTHON_BUILD:
-        if os.name == "nt":
+        if os.name == "nt" and not _POSIX_BUILD:
             inc_dir = os.path.dirname(sys._base_executable)
         else:
             inc_dir = _PROJECT_BASE
@@ -489,10 +494,10 @@ def _init_config_vars():
     except AttributeError:
         _CONFIG_VARS['py_version_nodot_plat'] = ''
 
-    if os.name == 'nt':
+    if os.name == 'nt' and not _POSIX_BUILD:
         _init_non_posix(_CONFIG_VARS)
         _CONFIG_VARS['VPATH'] = sys._vpath
-    if os.name == 'posix':
+    if _POSIX_BUILD:
         _init_posix(_CONFIG_VARS)
     if _HAS_USER_BASE:
         # Setting 'userbase' is done below the call to the
@@ -505,7 +510,7 @@ def _init_config_vars():
 
     # Always convert srcdir to an absolute path
     srcdir = _CONFIG_VARS.get('srcdir', _PROJECT_BASE)
-    if os.name == 'posix':
+    if _POSIX_BUILD:
         if _PYTHON_BUILD:
             # If srcdir is a relative path (typically '.' or '..')
             # then it should be interpreted relative to the directory
