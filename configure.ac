@@ -5460,9 +5460,15 @@ fi
 
 # first curses header check
 ac_save_cppflags="$CPPFLAGS"
-if test "$cross_compiling" = no; then
-  CPPFLAGS="$CPPFLAGS -I/usr/include/ncursesw"
-fi
+case $host_os in
+    mingw*)
+    ;;
+    *)
+      if test "$cross_compiling" = no; then
+        CPPFLAGS="$CPPFLAGS -I/usr/include/ncursesw"
+      fi
+    ;;
+esac
 
 AC_CHECK_HEADERS(curses.h ncurses.h)
 
