@@ -5683,6 +5683,9 @@ AC_CHECK_FUNCS([setpgrp],
 # check for namespace functions
 AC_CHECK_FUNCS([setns unshare])
 
+case $host in
+  *-*-mingw*) ;;
+  *)
 AC_CHECK_FUNCS([clock_gettime], [], [
     AC_CHECK_LIB([rt], [clock_gettime], [
         LIBS="$LIBS -lrt"
@@ -5720,6 +5723,9 @@ if ! { test "$ac_sys_system" = "Linux-android" &&
       ])
   ])
 fi
+
+  ;;
+esac
 
 AC_CHECK_FUNCS([nanosleep], [], [
     AC_CHECK_LIB([rt], [nanosleep], [
