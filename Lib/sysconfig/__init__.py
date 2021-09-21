@@ -49,13 +49,13 @@ _INSTALL_SCHEMES = {
         'data': '{base}',
         },
     'nt': {
-        'stdlib': '{installed_base}/Lib',
-        'platstdlib': '{base}/Lib',
-        'purelib': '{base}/Lib/site-packages',
-        'platlib': '{base}/Lib/site-packages',
-        'include': '{installed_base}/Include',
-        'platinclude': '{installed_base}/Include',
-        'scripts': '{base}/Scripts',
+        'stdlib': '{installed_base}/lib/{implementation_lower}{py_version_short}{abi_thread}',
+        'platstdlib': '{base}/lib/{implementation_lower}{py_version_short}{abi_thread}',
+        'purelib': '{base}/lib/{implementation_lower}{py_version_short}{abi_thread}/site-packages',
+        'platlib': '{base}/lib/{implementation_lower}{py_version_short}{abi_thread}/site-packages',
+        'include': '{installed_base}/include/{implementation_lower}{py_version_short}{abiflags}',
+        'platinclude': '{installed_base}/include/{implementation_lower}{py_version_short}{abiflags}',
+        'scripts': '{base}/bin',
         'data': '{base}',
         },
 
@@ -144,12 +144,12 @@ if _HAS_USER_BASE:
     _INSTALL_SCHEMES |= {
         # NOTE: When modifying "purelib" scheme, update site._get_path() too.
         'nt_user': {
-            'stdlib': '{userbase}/{implementation}{py_version_nodot_plat}',
-            'platstdlib': '{userbase}/{implementation}{py_version_nodot_plat}',
-            'purelib': '{userbase}/{implementation}{py_version_nodot_plat}/site-packages',
-            'platlib': '{userbase}/{implementation}{py_version_nodot_plat}/site-packages',
-            'include': '{userbase}/{implementation}{py_version_nodot_plat}/Include',
-            'scripts': '{userbase}/{implementation}{py_version_nodot_plat}/Scripts',
+            'stdlib': '{userbase}/lib/{implementation}{py_version_short}{abi_thread}',
+            'platstdlib': '{userbase}/lib/{implementation}{py_version_short}{abi_thread}',
+            'purelib': '{userbase}/lib/{implementation}{py_version_short}{abi_thread}/site-packages',
+            'platlib': '{userbase}/lib/{implementation}{py_version_short}{abi_thread}/site-packages',
+            'include': '{userbase}/include/{implementation}{py_version_short}{abi_thread}',
+            'scripts': '{userbase}/bin',
             'data': '{userbase}',
             },
         'posix_user': {
@@ -378,7 +378,7 @@ def _init_non_posix(vars):
         vars['LIBRARY'] = os.path.basename(_safe_realpath(dllhandle))
         vars['LDLIBRARY'] = vars['LIBRARY']
     vars['EXE'] = '.exe'
-    vars['VERSION'] = _PY_VERSION_SHORT_NO_DOT
+    vars['VERSION'] = _PY_VERSION_SHORT
     vars['BINDIR'] = os.path.dirname(_safe_realpath(sys.executable))
     vars['TZPATH'] = ''
 
