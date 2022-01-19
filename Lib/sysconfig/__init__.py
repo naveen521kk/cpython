@@ -144,20 +144,20 @@ if _HAS_USER_BASE:
     _INSTALL_SCHEMES |= {
         # NOTE: When modifying "purelib" scheme, update site._get_path() too.
         'nt_user': {
-            'stdlib': '{userbase}/lib/{implementation}{py_version_short}{abi_thread}',
-            'platstdlib': '{userbase}/lib/{implementation}{py_version_short}{abi_thread}',
-            'purelib': '{userbase}/lib/{implementation}{py_version_short}{abi_thread}/site-packages',
-            'platlib': '{userbase}/lib/{implementation}{py_version_short}{abi_thread}/site-packages',
-            'include': '{userbase}/include/{implementation}{py_version_short}{abi_thread}',
+            'stdlib': '{userbase}/lib/{implementation}{py_version_short_plat}{abi_thread}',
+            'platstdlib': '{userbase}/lib/{implementation}{py_version_short_plat}{abi_thread}',
+            'purelib': '{userbase}/lib/{implementation}{py_version_short_plat}{abi_thread}/site-packages',
+            'platlib': '{userbase}/lib/{implementation}{py_version_short_plat}{abi_thread}/site-packages',
+            'include': '{userbase}/include/{implementation}{py_version_short_plat}{abi_thread}',
             'scripts': '{userbase}/bin',
             'data': '{userbase}',
             },
         'posix_user': {
-            'stdlib': '{userbase}/{platlibdir}/{implementation_lower}{py_version_short}{abi_thread}',
-            'platstdlib': '{userbase}/{platlibdir}/{implementation_lower}{py_version_short}{abi_thread}',
-            'purelib': '{userbase}/lib/{implementation_lower}{py_version_short}{abi_thread}/site-packages',
-            'platlib': '{userbase}/lib/{implementation_lower}{py_version_short}{abi_thread}/site-packages',
-            'include': '{userbase}/include/{implementation_lower}{py_version_short}{abi_thread}',
+            'stdlib': '{userbase}/{platlibdir}/{implementation_lower}{py_version_short_plat}{abi_thread}',
+            'platstdlib': '{userbase}/{platlibdir}/{implementation_lower}{py_version_short_plat}{abi_thread}',
+            'purelib': '{userbase}/lib/{implementation_lower}{py_version_short_plat}{abi_thread}/site-packages',
+            'platlib': '{userbase}/lib/{implementation_lower}{py_version_short_plat}{abi_thread}/site-packages',
+            'include': '{userbase}/include/{implementation_lower}{py_version_short_plat}{abi_thread}',
             'scripts': '{userbase}/bin',
             'data': '{userbase}',
             },
@@ -493,6 +493,10 @@ def _init_config_vars():
         _CONFIG_VARS['py_version_nodot_plat'] = sys.winver.replace('.', '')
     except AttributeError:
         _CONFIG_VARS['py_version_nodot_plat'] = ''
+    if os.name == 'nt' and _POSIX_BUILD:
+        _CONFIG_VARS['py_version_short_plat'] = f'{_PY_VERSION_SHORT}-{get_platform()}'
+    else:
+        _CONFIG_VARS['py_version_short_plat'] = _PY_VERSION_SHORT
 
     if os.name == 'nt' and not _POSIX_BUILD:
         _init_non_posix(_CONFIG_VARS)
@@ -583,7 +587,7 @@ def get_config_var(name):
     """
     return get_config_vars().get(name)
 
-
+# make sure to change site._get_platform() while changing this function
 def get_platform():
     """Return a string that identifies the current platform.
 
