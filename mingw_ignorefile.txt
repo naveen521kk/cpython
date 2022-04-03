@@ -32,3 +32,5 @@ test.test_venv.EnsurePipTest.*
 # flaky
 test.test__xxsubinterpreters.*
 test.test_asyncio.test_subprocess.SubprocessProactorTests.test_stdin_broken_pipe
+test.test_tcl.TclTest.testLoadWithUNC
+

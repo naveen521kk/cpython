@@ -178,18 +178,7 @@ def change_root (new_root, pathname):
         (drive, path) = os.path.splitdrive(pathname)
         if path[0] == os.sep:
             path = path[1:]
-        (drive_r, path_r) = os.path.splitdrive(new_root)
-        if path_r and path_r[0] == os.sep:
-            path_r = path_r[1:]
-        drive_used = ''
-        if len(drive) == 2 and len(drive_r) == 2 and drive != drive_r:
-            raise DistutilsChangeRootError("root and pathname not on same drive (%s, %s)"
-                   % (drive_r,drive))
-        elif len(drive_r) == 2:
-            drive_used = drive_r+os.sep
-        elif len(drive) == 2:
-            drive_used = drive+os.sep
-        return os.path.join(drive_used+path_r, path)
+        return os.path.join(new_root, path)
 
     else:
         raise DistutilsPlatformError("nothing known about platform '%s'" % os.name)
