@@ -7953,6 +7953,7 @@ AS_CASE([$ac_sys_system],
     )
   ],
   [CYGWIN*], [PY_STDLIB_MOD_SET_NA([_scproxy])],
+  [MINGW*], [PY_STDLIB_MOD_SET_NA([readline])],
   [QNX*], [PY_STDLIB_MOD_SET_NA([_scproxy])],
   [FreeBSD*], [PY_STDLIB_MOD_SET_NA([_scproxy])],
   [Emscripten|WASI], [
