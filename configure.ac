@@ -3336,9 +3336,16 @@ AC_CHECK_SIZEOF([double], [8])
 AC_CHECK_SIZEOF([fpos_t], [4])
 AC_CHECK_SIZEOF([size_t], [4])
 AC_CHECK_ALIGNOF([size_t])
-AC_CHECK_SIZEOF([pid_t], [4])
 AC_CHECK_SIZEOF([uintptr_t])
 AC_CHECK_ALIGNOF([max_align_t])
+
+case $host_os in
+  mingw*) ;;
+  *)
+    AC_CHECK_SIZEOF([pid_t], [4])
+    ;;
+esac
+
 
 AC_TYPE_LONG_DOUBLE
 AC_CHECK_SIZEOF([long double], [16])
